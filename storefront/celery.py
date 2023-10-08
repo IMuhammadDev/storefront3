@@ -2,7 +2,7 @@ from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "storefront.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "storefront.settings.dev")
 
 celery = Celery("sotrefront")
 celery.config_from_object("django.conf:settings", namespace="CELERY")

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "djoser",
     "playground",
     "debug_toolbar",
+    "silk",
     "store",
     "tags",
     "likes",
@@ -54,7 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -63,6 +64,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if DEBUG:
+    MIDDLEWARE += ["silk.middleware.SilkyMiddleware"]
+
 
 INTERNAL_IPS = [
     # ...
@@ -189,5 +194,17 @@ CELERY_BEAT_SCHEDULE = {
         "task": "playground.tasks.notify_customers",
         "schedule": 5,
         "args": ["Hello World"],
+    }
+}
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/2",
+        "TIMEOUT": 10 * 60,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
     }
 }
